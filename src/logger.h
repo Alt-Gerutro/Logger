@@ -30,6 +30,6 @@ typedef struct log_t {
     char *message;
 } Log_t;
 
-void log(Logger_t logger, Level level, char *message, char *path);
+void logMsg(Logger_t logger, Level level, char *message, char *path);
 
 #endif // LOGGER_H

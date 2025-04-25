@@ -1,23 +1,51 @@
 #include "logger.h"
 
-char *concat_strings(const char *str1, const char *str2) {
+char *concat_strings(int va_count_cats, ...) {
+    
     unsigned int size = 256;
     void *buf = malloc(size * sizeof(char));
 
-    if (sizeof(str1) + sizeof(str2) + 2 < sizeof(*buf)) {
-        size = size + sizeof(str1) + sizeof(str2) + 2;
-        buf = realloc(buf, size);
+    va_list factor;
+    va_start(factor, va_count_cats);
+
+    for (int i = 0; i < va_count_cats; i++) {
+
+        char *str1, *str2;
+
+        if (va_count_cats % 2 != 0 && i == va_count_cats - 1) {
+            str1 = va_arg(factor, char*);
+            str2 = " ";
+        } else {
+            str1 = va_arg(factor, char*);
+            str2 = va_arg(factor, char*);
+        }
+
+        printf("str1 = %s\n", str1);
+        printf("str2 = %s\n", str2);
+        if (sizeof(str1) + sizeof(str2) + 2 < sizeof(*buf)) {
+            printf("OLD SIZE = %d\n", size);
+            size = size + sizeof(str1) + sizeof(str2) + 2;
+            printf("NEW SIZE = %d\n", size);
+            buf = realloc(buf, size);
+        }
+
+        if (!buf) {
+            printf("Error: cannot allocate buffer.");
+            return '\0';
+        }
+
+        strcat(buf, str1);
+        strcat(buf, str2);
     }
-
-    if (!buf) {
-        printf("Error");
-        return '\0';
-    }
-
-    strcpy(buf, str1);
-    strcat(buf, str2);
-
+    va_end(factor);
     return buf;
+}
+
+char *getTime() {
+    // TODO: complete this
+    char *result;
+
+    return result;
 }
 
 /* Create log(Log_t) struct */
@@ -41,7 +69,7 @@ void writeStringLogFile(char *filename, char *string) {
     fclose(fap);
 }
 
-void log(Logger_t logger, Level level, char *message, char *path) {
+void logMsg(Logger_t logger, Level level, char *message, char *path) {
     Log_t log = createLog(logger, level, message);
     char *level_S;
 
@@ -71,16 +99,14 @@ void log(Logger_t logger, Level level, char *message, char *path) {
             break;
     }
     char *log_string;
-    const time_t timer = time(NULL);
+    // TODO: make a time displation
     if (logger.show_time) {
-        char *str1 = concat_strings(logger.prefix, " ");
-        char *str2 = concat_strings(str1, logger.name);
-        char *str3 = concat_strings(str2, " ");
-        char *str4 = concat_strings(str3, level_S);
-        char *str5 = concat_strings(str4, " ");
-        char *str6 = concat_strings(str5, logger.postfix);
-        char *str7 = concat_strings(str6, " ");
-        log_string = concat_strings(str7, message);
+        log_string = concat_strings(8,
+            logger.prefix, " ", " ", logger.postfix, " ",
+            logger.prefix, " ", logger.name, " ", level_S, " ", logger.postfix, " ", log.message);
+    } else {
+        log_string = concat_strings(5,
+            logger.prefix, " ", logger.name, " ", level_S, " ", logger.postfix, " ", log.message);
     }
     
     printf("%s\n", log_string);
