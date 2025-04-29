@@ -1,0 +1,4 @@
+/build/sl
+.vscode
+/build/tests
+build/*.log

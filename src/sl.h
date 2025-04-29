@@ -6,7 +6,15 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
-#include <stdarg.h>
+
+
+#ifndef SL_FILTER
+#define SL_FILTER SL_LVL_UNDEFINED
+#endif // SL_FILTER
+
+#ifndef __SL_PRIORITY_NAMES
+#define __SL_PRIORITY_NAMES 1
+#endif // __SL_PRIORITY_NAMES
 
 
 typedef enum sl_level {
@@ -21,12 +29,12 @@ typedef enum sl_level {
     SL_LVL_UNDEFINED // Undefined
 } Level;
 
-#if defined __SL_PRIORITY_NAMES
-
 typedef struct {
     char *name;
     unsigned char value;
 } charcode;
+
+#if defined __SL_PRIORITY_NAMES && __SL_PRIORITY_NAMES
 
 charcode priority_names[] = {
     {"FATAL", SL_LVL_FATAL},
@@ -39,6 +47,20 @@ charcode priority_names[] = {
     {"DEBUG", SL_LVL_DEBUG},
     {"UNDEFINED", SL_LVL_UNDEFINED}
 };
+
+#else
+
+charcode priority_names[] = {
+    {(char *)SL_LVL_FATAL, SL_LVL_FATAL},
+    {(char *)SL_LVL_ALERT, SL_LVL_ALERT},
+    {(char *)SL_LVL_CRIT, SL_LVL_CRIT},
+    {(char *)SL_LVL_ERR, SL_LVL_ERR},
+    {(char *)SL_LVL_WARN, SL_LVL_WARN},
+    {(char *)SL_LVL_NOTICE, SL_LVL_NOTICE},
+    {(char *)SL_LVL_INFO, SL_LVL_INFO},
+    {(char *)SL_LVL_DEBUG, SL_LVL_DEBUG},
+    {(char *)SL_LVL_UNDEFINED, SL_LVL_UNDEFINED}
+}
 
 #endif
 

@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "logger.h": "c",
-        "form.h": "c",
-        "time.h": "c",
-        "libcxl.h": "c",
-        "syslog.h": "c"
-    }
-}

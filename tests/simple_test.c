@@ -13,11 +13,11 @@ int main() {
     logMsg(logger_levels, SL_LVL_FATAL, "fatal error text", NULL);
     logMsg(logger_levels, SL_LVL_ALERT, "alert error text", NULL);
     logMsg(logger_levels, SL_LVL_CRIT, "critical error text", NULL);
-    logMsg(logger_levels, SL_LVL_ERR, "error error text", NULL);
-    logMsg(logger_levels, SL_LVL_WARN, "warning error text", NULL);
-    logMsg(logger_levels, SL_LVL_NOTICE, "notice error text", NULL);
-    logMsg(logger_levels, SL_LVL_INFO, "info error text", NULL);
-    logMsg(logger_levels, SL_LVL_DEBUG, "debug error text", NULL);
+    logMsg(logger_levels, SL_LVL_ERR, "error text", NULL);
+    logMsg(logger_levels, SL_LVL_WARN, "warning text", NULL);
+    logMsg(logger_levels, SL_LVL_NOTICE, "notice text", NULL);
+    logMsg(logger_levels, SL_LVL_INFO, "info text", NULL);
+    logMsg(logger_levels, SL_LVL_DEBUG, "debug text", NULL);
     logMsg(logger_levels, SL_LVL_UNDEFINED, "undefined error text", NULL);
 
     printf("LOGGER NAMES INFO:\n");

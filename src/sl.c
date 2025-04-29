@@ -1,6 +1,4 @@
-#define __SL_PRIORITY_NAMES 1
 #include "sl.h"
-#include <sys/syslog.h>
 
 char *concat_strings(int va_count_cats, ...) {
     unsigned int size = 256;
@@ -22,12 +20,12 @@ char *concat_strings(int va_count_cats, ...) {
         }
 
         if (sizeof(*buf) + sizeof(*str1) + sizeof(*str2) + 2 > sizeof(*buf)) {
-            size = (size + sizeof(*str1) + sizeof(*str2) + 2) * 2;
+            size = (sizeof(*buf) + sizeof(*str1) + sizeof(*str2) + size * 2);
             buf = realloc(buf, size);
         }
 
         if (!buf) {
-            printf("Error: cannot allocate buffer.");
+            printf("SL Error: cannot allocate buffer.");
             return '\0';
         }
 
@@ -39,12 +37,13 @@ char *concat_strings(int va_count_cats, ...) {
 }
 
 void writeStringLogFile(char *filename, char *string) {
-    FILE *fap = fopen(filename, "a");
+    FILE *fap = fopen(filename, "a+");
     if (!fap) {
-        perror("Error: cannot write file\n");
+        perror("SL Error: cannot write file\n");
     }
 
-    fputs(string, fap);
+    // TODO: MAKE FILE LOGGING.
+
     fclose(fap);
 }
 
@@ -52,9 +51,10 @@ void logMsg(Logger_t logger, Level level, char *message, char *path) {
     char *log_string;
     
     log_string = concat_strings(5, logger.prefix, " ", logger.name, " ", priority_names[level].name, " ", logger.postfix, " ", message);
+    strcat(log_string, "\n");
     
     if (path == NULL) {
-        printf("%s\n", log_string);
+        printf("%s", log_string);
     } else {
         writeStringLogFile(path, log_string);
     }
